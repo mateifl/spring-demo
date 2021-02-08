@@ -1,4 +1,4 @@
-package ro.mfl.testclient.sampler.impl;
+package ro.mfl.testclient.journey.impl;
 
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -8,27 +8,17 @@ import ro.mfl.testclient.entities.Customer;
 import ro.mfl.testclient.entities.Order;
 import ro.mfl.testclient.entities.OrderDetail;
 import ro.mfl.testclient.entities.Product;
+import ro.mfl.testclient.journey.Journey;
 
-public class CreateOrderJourney implements Runnable {
+public class CreateOrderJourney implements Journey {
 
   private WebClient webClient;
 
 
   @Override
-  public void run() {
-	  
-	  
-//	  Mono<OrderDetail> orderDetail1 = webClient.get().retrieve().bodyToMono(Product.class).map(product -> OrderDetail.builder().productId());
-	  
-	  
-	  
+  public void execute() {
 	  Mono<Customer> customerMono = webClient.get().retrieve().bodyToMono(Customer.class);
-	  
-	  customerMono.map( customer -> {
-		 Order order = Order.builder().customerId(customer.getCustomerId()).build();
-
-		 return order;
-	  });//.map( order -> order. ); 
+	  customerMono.map( customer ->  Order.builder().customerId(customer.getCustomerId()).build());//.map( order -> order. );
 	  
   }
 }
