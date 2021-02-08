@@ -1,11 +1,13 @@
 package ro.mfl.r2dbc.demo.handler;
 
-import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.server.ServerRequest;
-import org.springframework.web.reactive.function.server.ServerResponse;
+import java.util.List;
 
-import reactor.core.publisher.Mono;
+import org.springframework.stereotype.Component;
+
+import ro.mfl.r2dbc.demo.entities.Customer;
 import ro.mfl.r2dbc.demo.entities.Order;
+import ro.mfl.r2dbc.demo.entities.Product;
+import ro.mfl.r2dbc.demo.entities.Shipper;
 import ro.mfl.r2dbc.demo.repositories.OrderRepository;
 
 @Component
@@ -17,14 +19,12 @@ public class OrderHandler extends AbstractHandler<Integer, Order, OrderRepositor
     super(repository);
   }
 
-//  public Mono<ServerResponse> getCompleteOrder(ServerRequest request) {
-//	  final Integer id = Integer.valueOf(request.pathVariable("id"));
-//	  Mono<Order> orderMono = getRepository().findById(id).flatMap( order -> {
-//		  order.getId();
-//	  });
-//  }
-
   @Override protected Order prototype(){
 	  return orderPrototype;
   }
+
+  public void createOrder(Customer customer, List<Product> products, Shipper shipper) {
+
+  }
+
 }
