@@ -3,8 +3,6 @@ package ro.mfl.testclient.sampler;
 
 import lombok.Data;
 import ro.mfl.testclient.journey.Journey;
-import ro.mfl.testclient.sampler.Sampler;
-
 import java.util.Calendar;
 
 
