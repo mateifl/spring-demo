@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table("Products")
-public class Product implements IdentityOwner {
+public class Product {
 	
 	@Id
 	@Column("ProductID")

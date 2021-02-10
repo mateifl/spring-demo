@@ -10,14 +10,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Table(value="Orders")
-public class Order implements IdentityOwner {
+public class Order {
 	
 	@Id
 	@Column("OrderID")
@@ -34,10 +36,18 @@ public class Order implements IdentityOwner {
 	private String shipName;
 	@Column("ShipAddress")
 	private String shipAddress;
+	@Column("ShipCity")
 	private String shipCity;
+	@Column("ShipVia")
+	private Integer shipperId;
 	private String shipRegion;
+	@Column("ShipPostalCode")
 	private String shipPostalCode;
+	@Column("ShipCountry")
 	private String shipCountry;
+	@Column("CustomerID")
+	private String customerId;
+	@Column("EmployeeID")
+	private Integer employeeId;
 	
-//	private Flux<>
 }

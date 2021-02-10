@@ -11,13 +11,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import ro.mfl.r2dbc.demo.entities.IdentityOwner;
 
 @Slf4j
 @RequiredArgsConstructor
 public abstract class AbstractHandler<
     Id extends Serializable,
-    Entity extends IdentityOwner,
+    Entity,
     Repository extends ReactiveCrudRepository<Entity, Integer>> {
 
   private final Repository repository;

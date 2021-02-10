@@ -1,8 +1,8 @@
 package ro.mfl.testclient.journey;
 
 
-public interface Journey {
+public interface Journey<T> {
 
-    void execute();
+    Result<T> execute();
 
 }
