@@ -1,21 +1,26 @@
 package ro.mfl.testclient.journey.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import reactor.core.publisher.Flux;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 import ro.mfl.testclient.entities.Customer;
 import ro.mfl.testclient.entities.Order;
-import ro.mfl.testclient.entities.OrderDetail;
 import ro.mfl.testclient.entities.Product;
 import ro.mfl.testclient.journey.Journey;
 import ro.mfl.testclient.journey.Result;
 
+@Component
+@Scope("prototype")
+@RequiredArgsConstructor
+@Slf4j
 public class CreateOrderJourney implements Journey<Order> {
 
-  @Autowired
-  private WebClient webClient;
+  
+  private final WebClient webClient;
 
   @Override
   public Result<Order> execute() {

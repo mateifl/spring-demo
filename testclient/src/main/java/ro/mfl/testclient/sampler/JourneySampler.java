@@ -2,28 +2,33 @@ package ro.mfl.testclient.sampler;
 
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ro.mfl.testclient.journey.Journey;
 import java.util.Calendar;
 
 
 @Data
-public class JourneySampler implements Sampler {
+@RequiredArgsConstructor
+@Slf4j
+public class JourneySampler<T> implements Sampler {
 
     private Long startTime;
     private Long endTime;
-    private final Journey journey;
-    private Boolean active;
+    private final Journey<T> journey;
+    private final ResultProcessor<T> resultProcessor;
 
     @Override
-    public void run() {
+    public SamplerResult call() {
+    	if(log.isDebugEnabled()) log.debug("start sample");
         Calendar calendar = Calendar.getInstance();
         startTime  = calendar.getTimeInMillis();
-        journey.execute();
+        resultProcessor.processResult(journey.execute());
+        calendar = Calendar.getInstance();
         endTime = calendar.getTimeInMillis();
+        if(log.isDebugEnabled()) log.debug("end sample");
+        log.info("time: " + (startTime - endTime));
+        return SamplerResult.builder().startTime(startTime).endTime(endTime).build();
     }
 
-    @Override
-    public Boolean active() {
-        return active;
-    }
 }

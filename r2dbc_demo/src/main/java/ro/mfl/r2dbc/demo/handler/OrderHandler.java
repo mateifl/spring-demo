@@ -2,6 +2,7 @@ package ro.mfl.r2dbc.demo.handler;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyExtractors;
@@ -40,7 +41,8 @@ public class OrderHandler extends AbstractHandler<Integer, Order, OrderRepositor
 		Mono<CreateOrderRequest> createOrderRequestMono = serverRequest.body(BodyExtractors.toMono(CreateOrderRequest.class));
 
 		return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
-		        .body( createOrderRequestMono.flatMap( this::response ), CreateOrderResponse.class);
+		        .body( createOrderRequestMono.flatMap( this::response ), CreateOrderResponse.class)
+		        .onErrorResume( error -> ServerResponse.status(HttpStatus.NOT_FOUND).build() );
 	}
 
 	private Mono<CreateOrderResponse> response( CreateOrderRequest request ) {
@@ -66,6 +68,9 @@ public class OrderHandler extends AbstractHandler<Integer, Order, OrderRepositor
 						return orderDetailMono;
 					}).collectList().subscribe( orderDetails -> response.setOrderDetails(orderDetails) ); 
 					return response;
-				});
+				}).onErrorResume(error -> {
+					log.error(error.getMessage());
+					return Mono.error( error );
+					});
 	}
 }

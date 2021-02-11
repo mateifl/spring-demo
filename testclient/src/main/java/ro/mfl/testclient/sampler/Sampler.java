@@ -1,8 +1,7 @@
 package ro.mfl.testclient.sampler;
 
-public interface Sampler extends Runnable {
+import java.util.concurrent.Callable;
 
-    Long getStartTime();
-    Long getEndTime();
-    Boolean active();
+public interface Sampler extends Callable<SamplerResult> {
+
 }

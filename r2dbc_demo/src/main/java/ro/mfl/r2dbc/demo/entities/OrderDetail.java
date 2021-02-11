@@ -17,6 +17,8 @@ import lombok.NoArgsConstructor;
 public class OrderDetail {
 	
 	@Id
+	@Column("id")
+	private Integer id;
 	@Column("OrderID")
 	private Integer orderId;
 	@Column("ProductID")
