@@ -1,1 +1,1 @@
-loadProductsJourney 10
+loadProductsJourney 100

@@ -20,6 +20,7 @@ public class JourneySampler<T> implements Sampler {
 
     @Override
     public SamplerResult call() {
+  	
     	if(log.isDebugEnabled()) log.debug("start sample");
         Calendar calendar = Calendar.getInstance();
         startTime  = calendar.getTimeInMillis();
@@ -27,8 +28,9 @@ public class JourneySampler<T> implements Sampler {
         calendar = Calendar.getInstance();
         endTime = calendar.getTimeInMillis();
         if(log.isDebugEnabled()) log.debug("end sample");
-        log.info("time: " + (startTime - endTime));
+        log.info("time: " + (endTime - startTime));
         return SamplerResult.builder().startTime(startTime).endTime(endTime).build();
+        
     }
 
 }

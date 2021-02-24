@@ -7,7 +7,7 @@ public class FluxToConsoleResultProcessor implements ResultProcessor<Flux<String
 
 	@Override
 	public void processResult(Result<Flux<String>> result) {
-//		result.getResult().buffer().subs;
+		result.getResult().log().blockLast();
 		
 	}
 
