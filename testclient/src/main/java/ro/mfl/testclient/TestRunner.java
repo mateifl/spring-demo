@@ -10,10 +10,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
+import ro.mfl.testclient.journey.Journey;
+import ro.mfl.testclient.sampler.FluxToConsoleResultProcessor;
 import ro.mfl.testclient.sampler.JourneySampler;
 import ro.mfl.testclient.sampler.Sampler;
 import ro.mfl.testclient.testplan.TestPlan;
@@ -34,23 +35,21 @@ public class TestRunner implements CommandLineRunner, ApplicationContextAware {
     public void run(String... args) throws Exception {
     	log.info("start test plan");
     	TestPlan testPlan = new TestPlan();
-    	testPlan.loadFromFile(new ClassPathResource(path).getPath());
+    	
+    	testPlan.loadFromFile(path);
     	List<TestPlanItem> testPlanItems = testPlan.getItems();
     	
     	List<Sampler> samplers = new ArrayList<Sampler>();
     	
     	for(TestPlanItem testPlanItem : testPlanItems) {
     		for( int i = 0; i < testPlanItem.getRunsNumber(); i++ ) {
-//    			JourneySampler<>
-//    			samplers.add(  );
+    			JourneySampler journeySampler = new JourneySampler((Journey)applicationContext.getBean(testPlanItem.getJourneyName()), new FluxToConsoleResultProcessor());
+    			samplers.add(journeySampler);
     		}
     	}
     	
         ExecutorService executor = Executors.newFixedThreadPool(fixedPoolSize);
-        
-        
-        
-//        executor.invokeAll( );
+        executor.invokeAll(samplers);
 
     }
 

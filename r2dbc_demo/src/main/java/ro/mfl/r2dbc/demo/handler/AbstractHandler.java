@@ -24,13 +24,13 @@ public abstract class AbstractHandler<
   public Mono<ServerResponse> getEntities(ServerRequest request) {
     log.info("loading all " + prototype().getClass().getName());
     Flux<Entity> entities = repository.findAll();
-
     return ServerResponse.ok()
         .contentType(MediaType.APPLICATION_JSON)
         .body(entities, prototype().getClass());
   }
 
   public Mono<ServerResponse> getEntity(ServerRequest request) {
+    log.info("loading " + prototype().getClass().getName());
     final Integer id = Integer.valueOf(request.pathVariable("id"));
     Mono<Entity> orderMono = getRepository().findById(id);
     return ServerResponse.ok()

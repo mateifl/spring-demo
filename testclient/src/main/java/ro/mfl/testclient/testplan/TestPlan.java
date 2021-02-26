@@ -1,24 +1,27 @@
 package ro.mfl.testclient.testplan;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Data;
+import org.springframework.util.ResourceUtils;
 
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 @Data
+@Slf4j
 public class TestPlan {
 
 	private final List<TestPlanItem> items = new ArrayList<TestPlanItem>();
-	
+
 	public void loadFromFile(String path) {
-		try( BufferedReader reader = new BufferedReader( new FileReader(path) ) )
-		{
-			reader.lines().forEach( line -> {
+		log.info("load test plan from: " + path);
+
+		try (BufferedReader reader = new BufferedReader(
+				new FileReader(ResourceUtils.getFile(path)))) {
+			reader.lines().forEach(line -> {
 				String[] lineItems = line.split(" ");
 				TestPlanItem item = TestPlanItem.builder()
 						.journeyName(lineItems[0])
@@ -26,13 +29,8 @@ public class TestPlan {
 						.build();
 				items.add(item);
 			});
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			log.error("", e);
+		} 
 	}
 }
-
-
-
