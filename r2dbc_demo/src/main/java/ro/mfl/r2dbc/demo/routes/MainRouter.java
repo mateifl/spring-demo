@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import ro.mfl.r2dbc.demo.handler.CategoryHandler;
+import ro.mfl.r2dbc.demo.handler.InformationHandler;
 import ro.mfl.r2dbc.demo.handler.OrderHandler;
 import ro.mfl.r2dbc.demo.handler.ProductHandler;
 
@@ -33,6 +34,11 @@ public class MainRouter {
 	RouterFunction<ServerResponse> categoriesRoutes(CategoryHandler categoryHandler) {
 		return route(GET("/categories"), categoryHandler::getEntities)
 				.and(route(GET("/categories/{id}"), categoryHandler::getEntity));
+	}
+
+	@Bean
+	RouterFunction<ServerResponse> informationRoutes(InformationHandler informationHandler) {
+		return route(GET("/info"), informationHandler::getEntities);
 	}
 
 }
