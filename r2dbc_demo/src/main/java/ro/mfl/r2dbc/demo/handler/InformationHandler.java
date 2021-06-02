@@ -23,45 +23,30 @@ import ro.mfl.r2dbc.demo.repositories.ProductRepository;
 public class InformationHandler {
 
     private final OrderRepository orderRepository;
-    private final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
-
 
     public Mono<ServerResponse> getEntities(ServerRequest request) {
         log.info("loading all info entities ");
-        Flux<Customer> customers = customerRepository.findAll();
         Flux<Product> products = productRepository.findAll();
         Flux<Order> orders = orderRepository.findAll();
-        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(response(customers, products, orders),
+
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(response(products, orders),
                 InformationResponse.class);
     }
 
-    private Mono<InformationResponse> response(Flux<Customer> customers, Flux<Product> products, Flux<Order> orders) {
+    private Mono<InformationResponse> response(Flux<Product> products, Flux<Order> orders) {
         Mono<InformationResponse> response = Mono.just(new InformationResponse());
-        return response.flatMap(r ->
-                customers.collectList().map(list -> {
-                    r.setCustomers(list);
+        return response
+                .log()
+                .flatMap(r ->
+                    products.collectList().map(list -> {
+                    r.setProducts(list);
                     return r;
                 }))
                 .flatMap(r ->
-                        products.collectList().map(list -> {
-                            r.setProducts(list);
-                            return r;
-                        }))
-                .flatMap(r ->
-                        orders.collectList().map(list -> {
-                            r.setOrders(list);
-                            return r;
-                        }));
-
-//     return       customers.collectList().map(list -> {
-//      response.setCustomers(list);
-//      return response;
-//    });
-//    .map(r1 -> products.collectList().map(l -> {
-//      r1.setProducts(l);
-//      return r1;
-//    } ));
-
+                    orders.collectList().map(list -> {
+                    r.setOrders(list);
+                    return r;
+                }));
     }
 }

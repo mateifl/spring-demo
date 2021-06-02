@@ -47,6 +47,7 @@ public class OrderHandler extends AbstractHandler<Integer, Order, OrderRepositor
 	}
 
 	private Mono<CreateOrderResponse> response(CreateOrderRequest request) {
+		log.debug("create response");
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		CreateOrderResponse response = new CreateOrderResponse();
 		return getRepository()
